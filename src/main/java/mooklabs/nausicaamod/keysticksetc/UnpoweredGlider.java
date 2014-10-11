@@ -2,7 +2,7 @@ package mooklabs.nausicaamod.keysticksetc;
 
 import mooklabs.mookcore.Unused;
 import mooklabs.nausicaamod.Main;
-import mooklabs.nausicaamod.proxy.GuiHandlerNausicaa;
+import mooklabs.nausicaamod.inventorytab.NPlayerStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +23,7 @@ public class UnpoweredGlider extends Thread {
 		mc = Minecraft.getMinecraft();
 		UnpoweredGlider g = new UnpoweredGlider();
 		g.start();
-		Main.debugWrite("glider Registred!");
+		Main.debugWrite("glider registered!");
 
 	}
 
@@ -52,7 +52,7 @@ public class UnpoweredGlider extends Thread {
 	public static double drag = .001;
 
 	public double fuel;
-	// changeing
+	// changing
 	private double maxSpeed = .9;
 	private double minSpeed = .08;
 	private boolean lastTickGliding = false;
@@ -65,7 +65,7 @@ public class UnpoweredGlider extends Thread {
 
 	@SideOnly(Side.CLIENT)
 	/**
-	 * gives magnitued of player speed vector
+	 * gives magnitude of player speed vector
 	 * 
 	 * @param player
 	 * @return the speed
@@ -81,9 +81,9 @@ public class UnpoweredGlider extends Thread {
 			// System.out.println("running");
 			player = mc.thePlayer;
 			if (player != null) {
-				GuiHandlerNausicaa.nausicaaArmorExtended.init(Minecraft.getMinecraft().thePlayer);
+				NPlayerStats.get(Minecraft.getMinecraft().thePlayer);
 				if ((player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == Main.glider && Main.enableGlider)
-						|| (MookKeyHandler.gliderOn && GuiHandlerNausicaa.nausicaaArmorExtended.isStackInSlot(4))) {
+						|| (MookKeyHandler.gliderOn && NPlayerStats.get(player).armor.isStackInSlot(4))) {
 					// System.out.println(player.getCurrentEquippedItem().itemID);
 
 						
@@ -143,7 +143,7 @@ public class UnpoweredGlider extends Thread {
 					}
 				}
 
-				else {// if not glideing
+				else {// if not gliding
 					player = mc.thePlayer;
 					if (player != null) {
 						// renderer = mc.entityRenderer;

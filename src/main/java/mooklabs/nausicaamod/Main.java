@@ -5,7 +5,6 @@ import java.util.List;
 
 import mooklabs.mookcore.MMod;
 import mooklabs.mookcore.ToxicWorldGenerator;
-import mooklabs.mookcore.Unused;
 import mooklabs.mookcore.toolsandarmor.NArmor;
 import mooklabs.mookcore.toolsandarmor.NAxe;
 import mooklabs.mookcore.toolsandarmor.NPickaxe;
@@ -33,7 +32,6 @@ import mooklabs.nausicaamod.glider.GliderWing;
 import mooklabs.nausicaamod.glider.MetalPlate;
 import mooklabs.nausicaamod.godwarrior.EntityGodWarrior;
 import mooklabs.nausicaamod.godwarrior.GodWarriorControl;
-import mooklabs.nausicaamod.inventorytab.InventoryTabNausicaa;
 import mooklabs.nausicaamod.inventorytab.NPlayerHandler;
 import mooklabs.nausicaamod.mobs.EntityBug;
 import mooklabs.nausicaamod.mobs.EntityFoxSquirrel;
@@ -46,6 +44,10 @@ import mooklabs.nausicaamod.mobs.flying.EntitySpore;
 import mooklabs.nausicaamod.mobs.npc.EntityNausicaaVillager;
 import mooklabs.nausicaamod.proxy.CommonProxy;
 import mooklabs.nausicaamod.proxy.GuiHandlerNausicaa;
+import mooklabs.nausicaamod.tea.BlockTeapot;
+import mooklabs.nausicaamod.tea.TeaBush;
+import mooklabs.nausicaamod.tea.TeaLeaves;
+import mooklabs.nausicaamod.tea.Teapot;
 import mooklabs.nausicaamod.tools.Blowgun;
 import mooklabs.nausicaamod.tools.InsectWhistle;
 import mooklabs.nausicaamod.tools.parts.CeramicIngot;
@@ -80,7 +82,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import tconstruct.client.tabs.TabRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
@@ -109,14 +110,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  * GuiIngameModOptions
  * ModMetadata
  * FMLClientHandler**main forge class??
- * NausicaaMod: nau•si•ca•mod, {\iProper Noun};\r1. A Minecraft Mod Based on the anime and manga of Hayao Miyazaki's {\ uNausicaa of the Valley of Wind}.\n2. A very badly coded eclipse project.",
+ * NausicaaMod: NausicaaMod, {\iProper Noun};\r1. A Minecraft Mod Based on the anime and manga of Hayao Miyazaki's {\ uNausicaa of the Valley of Wind}.\n2. A very badly coded eclipse project.",
  *  */// }}
 /**
  * this is the main class for nausicaamod<br>
  * 
  * @author mooklabs
  */
-@Mod(modid = Main.modid, version = Main.VERSION, guiFactory = "mooklabs.nausicaamod.NausicaaConfigGuiFactory")
+@Mod(modid = Main.modid, name = Main.name, version = Main.VERSION, guiFactory = "mooklabs.nausicaamod.NausicaaConfigGuiFactory")
 public class Main extends MMod{
 
 	public static final String modid = "nausicaamod";
@@ -139,7 +140,7 @@ public class Main extends MMod{
 	public static final int nausicaaTabGuiId = 3;
 
 
-	// inits for ease of changeing
+	// inits for ease of changing
 	public final static String itemfold = "nausicaamod";
 	// TODO CANNOT USE THIS ID public final static int thinTreeRenderId = 40;
 	public final static int textRenderId = 50;
@@ -147,50 +148,52 @@ public class Main extends MMod{
 
 	/**
 	 * The game settings that currently hold effect.
-	 */
+	 *server doesent like
 	@Unused
-	//public NausicaaGameSettings gameSettings;
+	public NausicaaGameSettings gameSettings;*/
 
-	//I dont think ill ever acctaully use this value, but its here anyway
+	//I don't think ill ever actually use this value, but its here anyway
 	public final static boolean debug = false;
 
 	// {{ Creative tab madness!
 	public static CreativeTabs tabNCombat = new CreativeTabs("tabNCombat") {
-
+		
 		@Override
 		public Item getTabIconItem() {
 			return Main.ceramicKnife;
 		}
 	};
 	public static CreativeTabs tabNBlocks = new CreativeTabs("tabNBlocks") {
-
 		@Override
 		public Item getTabIconItem() {
 			return Item.getItemFromBlock(Main.poisonGrass);
 		}
 	};
 	public static CreativeTabs tabNTools = new CreativeTabs("tabNTools") {
-
 		@Override
 		public Item getTabIconItem() {
 			return Main.ceramicAxe;
 		}
 	};
 	public static CreativeTabs tabNGlider = new CreativeTabs("tabNGlider") {
-
 		@Override
 		public Item getTabIconItem() {
 			return Main.glider;
 		}
 	};
 	public static CreativeTabs tabNItems = new CreativeTabs("tabNItems") {
-
 		@Override
 		public Item getTabIconItem() {
 			return Main.wetClay;
 		}
 	};
-	public static CreativeTabs tabNPlants = new CreativeTabs("tabNPlants") {
+	public static CreativeTabs tabNTea = new CreativeTabs("tabNTea") {
+		@Override
+		public Item getTabIconItem() {
+			return Main.glider;
+		}
+	};
+	/*public static CreativeTabs tabNPlants = new CreativeTabs("tabNPlants") {
 
 		@Override
 		public Item getTabIconItem() {
@@ -210,19 +213,20 @@ public class Main extends MMod{
 		public Item getTabIconItem() {
 			return Main.wetClay;
 		}
-	};
-	public static CreativeTabs tabGlider = Main.tabNGlider;// CreativeTabs.tabBlock;
-	public static CreativeTabs tabTools = Main.tabNTools;// CreativeTabs.tabTools;
-	public static CreativeTabs tabCombat = Main.tabNCombat;// CreativeTabs.tabCombat;
+	};*/
+
+	public static CreativeTabs tabGlider = Main.tabNGlider;
+	public static CreativeTabs tabTools = Main.tabNTools;
+	public static CreativeTabs tabCombat = Main.tabNCombat;
 	public static CreativeTabs tabBlock = Main.tabNBlocks;
 	public static CreativeTabs tabItems = Main.tabNItems;
-	public static CreativeTabs tabPlants = Main.tabNPlants;
-	public static CreativeTabs tabCooking = Main.tabNCooking;
-	public static CreativeTabs tabUtil = Main.tabNUtil;
-
+	public static CreativeTabs tabPlants = Main.tabNBlocks;//Main.tabNPlants;
+	public static CreativeTabs tabCooking = Main.tabNBlocks;//Main.tabNCooking;
+	public static CreativeTabs tabUtil = Main.tabNBlocks;//Main.tabNUtil;
+	public static CreativeTabs tabTea = Main.tabNTea;
 	// }}
 
-	// {{No enums anymore?!?! this makes the tool and armor types and sets their stats!
+	// {{this makes the tool and armor types and sets their stats!
 	// diamond is(3, 1561, 8.0F, 3.0F, 10) IRON is(2, 250, 6.0F, 2.0F, 14)
 	public static ToolMaterial unfiredCeramicTool = EnumHelper.addToolMaterial("unfiredCeramic", 0, 2, 1F, 0F, 0);// TODO make all tools start as this
 	public static ToolMaterial ceramicTool = EnumHelper.addToolMaterial("ceramic", 2, 300, 5.0F, 1.5F, 18);
@@ -272,7 +276,7 @@ public class Main extends MMod{
 	public static final Item specialChestplate = new NArmor(specialArmor, 1, 1);
 	public static final Item specialLegs = new NArmor(specialArmor, 1, 2);
 	public static final Item specialBoots = new NArmor(specialArmor, 1, 3);
-	
+
 	public static final Item gasMask = new NArmor(ceramicArmor, 1, 0);
 
 	// }}
@@ -308,7 +312,7 @@ public class Main extends MMod{
 
 	// }}
 
-	public final static Block invisibleLight = new InvisibleLight().setCreativeTab(tabUtil);
+	public final static Block invisibleLight = new InvisibleLight().setCreativeTab(tabBlock);//TODO tabutil
 
 	public final static Block gliderBuilder = new BlockGliderBuilder().setCreativeTab(tabGlider);
 	// public final static Block craftingTable = new
@@ -339,6 +343,17 @@ public class Main extends MMod{
 		}
 	}.setUnlocalizedName("flare").setCreativeTab(tabCombat).setTextureName(Main.itemfold + ":blowDart");
 
+	//{tea
+	//public final static Block blockTeapot = new BlockTeapot().setCreativeTab(tabCombat).setBlockName("teapot);
+	//public final static Item teapot = new Teapot().setCreativeTab(tabCombat);
+	//public final static Block teaBush = new TeaBush().setCreativeTab(tabCombat);
+	public final static Item teaLeaves = new TeaLeaves().setCreativeTab(tabCombat);
+
+	//}
+	
+	
+	
+	
 	/* //plants //public static Item toxicSeeds = new Seeds().setCreativeTab(tabPlants); public static Block sporer = new Sporer().setCreativeTab(tabNPlants); //Drink public
 	 * final static Item drinks = new Drinks().setCreativeTab(tabItems).setUnlocalizedName("drinks");//TODO change???? public final static Block teapot = new
 	 * Teapot().setCreativeTab(tabCooking); public final static Block stoveIdle = new Stove(true).setHardness(3.5F).setStepSound(Block.soundStoneFootstep)
@@ -367,7 +382,7 @@ public class Main extends MMod{
 	/* //TODO this -Desert with occasional tree trunks and sporeballs (toxicDesert) -Jungle with huge crevasses (called airspaceJungle) -Jungle with large lakes for Ohmu to
 	 * live in (toxicLakes) -Jungle with ruined buildings (toxicVillage) -Swamp with toxic trees, dirt, plants (toxicSwamp) -Toxic jungle mountains (toxicHills) */
 
-	// /////////////Dimention//////////////////////
+	// /////////////Dimension//////////////////////
 	// public static BlockPortalToxic portalToxicBlock = (BlockPortalToxic) new BlockPortalToxic().setBlockName("portalToxicBlock").setCreativeTab(tabBlock);
 
 	public final static int dimensionId = 8;
@@ -375,7 +390,7 @@ public class Main extends MMod{
 	// worldgen
 	// This just changes some stuff, it is applied after chunck gen is your world generation file.
 	public static ToxicWorldGenerator modifyWorldGen = new ToxicWorldGenerator();
-	// /////end dimention
+	// /////end dimension
 
 	// attributes?
 	public static final IAttribute kindness = (new RangedAttribute("generic.kindness", 20.0D, 0.0D, Double.MAX_VALUE)).setDescription("Kindness Level").setShouldWatch(true);// MAYBE
@@ -390,12 +405,12 @@ public class Main extends MMod{
 	// TODO put in a config
 	public static final boolean removeMostOtherBiomes = false;
 
-	
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		init(this.name);
 
-		TabRegistry.registerTab(new InventoryTabNausicaa());
+		//CRIT TabRegistry.registerTab(new InventoryTabNausicaa());
 		itemBlockNameReg();
 
 		//{{EVERYTHING
@@ -477,13 +492,13 @@ public class Main extends MMod{
 		// }}
 		// }}
 
-		
 
-		// {{/////////////////////////////RECIPIES////////////////////////////////////
 
-		// ///////////////shapless recipies//////////////////
-		// GameRegistry.addShapelessRecipe([output],[ingrediants],[more
-		// ingrdiants etc]);
+		// {{/////////////////////////////RECIPES////////////////////////////////////
+
+		// ///////////////shapeless recipes//////////////////
+		// GameRegistry.addShapelessRecipe([output],[ingredients],[more
+		// ingredients etc]);
 		GameRegistry.addShapelessRecipe(woodStack, poisonLogStack);
 
 		// //////////////////////////////shaped///////////////
@@ -494,7 +509,7 @@ public class Main extends MMod{
 		GameRegistry.addRecipe(reinforcedWetClayStack, "cwc", "cwc", "cwc", 'c', clayBlockStack, 'w', diamondStickStack);
 
 		GameRegistry.addRecipe(wetClayStack, new Object[] { "iii", "cwc", "ccc", 'c', clayBlockStack, 'w', waterBucketStack, 'i', clayStack });// i dont think this version is
-																																				// needed
+		// needed
 
 		// {{ ------------TOOLS-------------
 		// ceramic tools
@@ -507,16 +522,16 @@ public class Main extends MMod{
 
 		// shell Tools
 		GameRegistry.addRecipe(shellPickaxeStack, "ccc", " s ", " s ",// TODO
-																		// make
-																		// it
-																		// not
-																		// duplicates?
-																		// or
-																		// change
+				// make
+				// it
+				// not
+				// duplicates?
+				// or
+				// change
 				'c', shellShardStack, 's', diamondStickStack);
 		GameRegistry.addRecipe(shellSwordStack, "  c", "ec ", "se ", 'c', shellShardStack, 'e', ironStack, 's', diamondStickStack);// TODO
-																																	// fancy
-																																	// sword???????????
+		// fancy
+		// sword???????????
 		GameRegistry.addRecipe(shellAxeStack, "cc ", "cs ", " s ", 'c', shellShardStack, 's', diamondStickStack);
 		GameRegistry.addRecipe(shellShovelStack, " c ", " s ", " s ", 'c', shellShardStack, 's', diamondStickStack);
 
@@ -544,7 +559,7 @@ public class Main extends MMod{
 		GameRegistry.addRecipe(handleStack, "sss", "s s", "c c", 'c', leatherStack, 's', metalPlateStack);
 
 		// }}//////////////////////////Smelting recipes////////////////////////////////////
-		
+
 		//{{SMELTING
 		GameRegistry.addSmelting(unfiredCeramicHelmetStack, ceramicHelmetStack, 0.0f);
 		GameRegistry.addSmelting(unfiredCeramicChestplateStack, ceramicChestplateStack, 0.0f);
@@ -556,25 +571,22 @@ public class Main extends MMod{
 
 		GameRegistry.addSmelting(wetClay, ceramicIngotStack, 0.0f);
 		//}}
-		
-		// Inventory tabs????
-		// TODO ??????????????
-		/* EntityPlayer player = Minecraft.getMinecraft().thePlayer; GuiInventory inventory = new GuiInventory(player); TabRegistry.addTabsToInventory(inventory); */
+
 
 		// CRIT NausicaaWorldType.addRemoveNeededBiomes();
 		//}}
-	
-
-        playerTracker = new NPlayerHandler();
-        // GameRegistry.registerPlayerTracker(playerTracker);
-        FMLCommonHandler.instance().bus().register(playerTracker);
-        MinecraftForge.EVENT_BUS.register(playerTracker);
 
 
+		playerTracker = new NPlayerHandler();
+		// GameRegistry.registerPlayerTracker(playerTracker);
+		FMLCommonHandler.instance().bus().register(playerTracker);
+		MinecraftForge.EVENT_BUS.register(playerTracker);
 
-		
+
+
+
 	}
-    public static NPlayerHandler playerTracker;
+	public static NPlayerHandler playerTracker;
 
 	GuiHandlerNausicaa guiHandler = new GuiHandlerNausicaa();
 
@@ -584,9 +596,8 @@ public class Main extends MMod{
 
 		proxy.registerRenderers();// does more than just renders
 
-		// CRIT MinecraftForge.EVENT_BUS.register(new NausicaaEventHandler());//kindness
 
-		// Dimention
+		// Dimension
 		// CRIT DimensionManager.registerProviderType(Main.dimensionId, WorldProviderToxic.class, false);
 		// CRIT DimensionManager.registerDimension(Main.dimensionId, Main.dimensionId);
 
@@ -599,7 +610,7 @@ public class Main extends MMod{
 
 		// {{//////////////ITEMSTACKS//////////////////
 
-		// {{ vanilia stacks////////////////////////////////
+		// {{ vanilla stacks////////////////////////////////
 
 		ItemStack goldStack = new ItemStack(Items.gold_ingot);
 		ItemStack coalStack = new ItemStack(Items.coal);
@@ -645,7 +656,7 @@ public class Main extends MMod{
 		 * GameRegistry.removeBiome(BiomeGenBase.swampland); GameRegistry.removeBiome(BiomeGenBase.desert); GameRegistry.removeBiome(BiomeGenBase.forest);
 		 * GameRegistry.removeBiome(BiomeGenBase.jungle); } */
 
-		// {{entittys
+		// {{entities
 
 		// BiomeGenBase[] nausicaaBiomes = { Main.poisonForest, Main.poisonSwamp, Main.poisonDesert, Main.poisonForestVillage, Main.poisonSwamp };
 		BiomeGenBase[] nausicaaBiomes = { BiomeGenBase.forest, BiomeGenBase.jungle, BiomeGenBase.desert, BiomeGenBase.taiga };
@@ -681,6 +692,7 @@ public class Main extends MMod{
 	}
 
 	// /////////////Mobs!////////////
+	@Override
 	public void registerEntity(Class<? extends Entity> entityClass, String entityName, int bkEggColor, int fgEggColor) {
 		int id = EntityRegistry.findGlobalUniqueEntityId();
 
@@ -688,6 +700,7 @@ public class Main extends MMod{
 		EntityList.entityEggs.put(Integer.valueOf(id), new EntityEggInfo(id, bkEggColor, fgEggColor));
 	}
 
+	@Override
 	public void addSpawn(Class<? extends EntityLiving> entityClass, int spawnProb, int min, int max, BiomeGenBase[] biomes) {
 		if (spawnProb > 0) {
 			EntityRegistry.addSpawn(entityClass, spawnProb, min, max, EnumCreatureType.creature, biomes);
@@ -704,7 +717,7 @@ public class Main extends MMod{
 			FMLLog.severe("[NausicaaMod]: Something went wrong when checking for a mod being loaded");
 		}
 		//TabRegistry.addTabsToInventory(new NausicaaGuiInventory(Minecraft.getMinecraft().thePlayer));
-		
+
 
 		/* impliments later...better way to waila
 		 * if (Loader.isModLoaded("waila")) {
@@ -716,10 +729,10 @@ public class Main extends MMod{
 
 	private void itemBlockNameReg() {
 		FluidRegistry.registerFluid(liquidSand);
-		Main.liquidSandBlock = new Liquid(liquidSand, Material.lava).setCreativeTab(tabUtil);
+		Main.liquidSandBlock = new Liquid(liquidSand, Material.lava).setCreativeTab(tabBlock);//TODO tabutil
 		registerBlock(liquidSandBlock, "Poison Dirt");
 
-		// {{ block registation
+		// {{ block registration
 		registerBlock(poisonDirt, "Poison Dirt");
 		registerBlock(poisonGrass, "Poison Grass");
 		registerBlock(poisonLog, "Poison Log");
@@ -834,7 +847,7 @@ public class Main extends MMod{
 		registerItem(unfiredCeramicLegs, "Unfired Ceramic Greaves");
 		registerItem(unfiredCeramicBoots, "Unfired Ceramic Boots");
 
-		registerItem(ceramicHelmet, "Ceramic Helmet");
+		//registerItem(ceramicHelmet, "Ceramic Helmet");
 		registerItem(ceramicChestplate, "Ceramic Chestplate");
 		registerItem(ceramicLegs, "Ceramic Greaves");
 		registerItem(ceramicBoots, "Ceramic Boots");
@@ -848,38 +861,48 @@ public class Main extends MMod{
 		registerItem(specialChestplate, "Special Chestplate");
 		registerItem(specialLegs, "Special Greaves");
 		registerItem(specialBoots, "Special Boots");
-		
+
 		registerItem(gasMask, "Gas Mask");
 
 		// }}
+		
+		//{{//////Tea/////
+		//registerBlock(blockTeapot, "teapot");
+		//registerBlock(teaBush, "bush");
+		//registerItem(teapot, "teapot");
+		registerItem(teaLeaves, "tea leaves");
+
+		//}}
+		for(int times =0; times <100; times++)System.out.println(times);
 		FMLInterModComms.sendMessage(TechMain.modid, "boo", "HAI");
 
 	}
 
-	// ///////////block reg agian////////////
+	// ///////////block reg again////////////
 	public static void registerBlock(Block block, String name) {
 		GameRegistry.registerBlock(block, block.getUnlocalizedName());
-		 LanguageRegistry.addName(block, name);
+		LanguageRegistry.addName(block, name);
 	}
 
 	public static void registerItem(Item item, String name) {
 		GameRegistry.registerItem(item, modid + item.getUnlocalizedName());
-		 LanguageRegistry.addName(item, name);
+		LanguageRegistry.addName(item, name);
 	}
-	
+
 	/** this is more just for future reference than anything else */
+	@Override
 	@EventHandler
 	public void messageRecieve(IMCEvent event) {
-		
-		   Iterator<IMCMessage> itr = event.getMessages().iterator();
-	      while(itr.hasNext()) {
-	         IMCMessage element = itr.next();
-	         logger.info("Sender: " + element.getSender() + "Value: " + element.getStringValue() + " ");
-	      } 
-	      System.out.println();
+
+		Iterator<IMCMessage> itr = event.getMessages().iterator();
+		while(itr.hasNext()) {
+			IMCMessage element = itr.next();
+			logger.info("Sender: " + element.getSender() + "Value: " + element.getStringValue() + " ");
+		}
+		System.out.println();
 	}
-	
-	
+
+
 
 	// {{extrastuff
 	/**
@@ -888,7 +911,7 @@ public class Main extends MMod{
 	 */
 	@SideOnly(Side.CLIENT)
 	public void initDebug() {
-		NausicaaDebugWindow.init();
+		//NausicaaDebugWindow.init();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -897,7 +920,8 @@ public class Main extends MMod{
 	 * since I dont want to fill the mc console up!
 	 */
 	public static void debugWrite(String str) {
-		NausicaaDebugWindow.write(str);
+		//NausicaaDebugWindow.write(str);
 	}
 
 }
+

@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import tconstruct.TConstruct;
 
+import mooklabs.mookcore.MLib;
 import mooklabs.nausicaamod.Main;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -30,7 +31,7 @@ public class NausicaaArmorExtended implements IInventory {
 	public UUID globalID = UUID.fromString("89d3c870-d93c-11e3-9c1a-0800200c9a66");// dont know, replaced with one generted online
 
 	public void init(EntityPlayer player) {
-		parent = new WeakReference<EntityPlayer>(player);
+		this.parent = new WeakReference<EntityPlayer>(player);
 		//System.out.println();
 	}
 
@@ -50,11 +51,11 @@ public class NausicaaArmorExtended implements IInventory {
 
 	@Override
 	public ItemStack decrStackSize(int slot, int quantity) {
-		System.out.println("decr " + slot);
+		//System.out.println("decr " + slot);
 
 		if (inventory[slot] != null) {
-			System.out.println("Took something from slot " + slot);
-			 Main.logger.info("Took something from slot " + slot);
+			//System.out.println("Took something from slot " + slot);
+			 //Main.logger.info("Took something from slot " + slot);
 			if (inventory[slot].stackSize <= quantity) {
 				ItemStack stack = inventory[slot];
 				inventory[slot] = null;
@@ -164,6 +165,8 @@ public class NausicaaArmorExtended implements IInventory {
 
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		if (tagCompound != null) {
+			System.out.println("[NMod]nbtReadSuccess");
+
 			NBTTagList tagList = tagCompound.getTagList("NInventory", 10);
 			for (int i = 0; i < tagList.tagCount(); ++i) {
 				NBTTagCompound nbttagcompound = (NBTTagCompound) tagList.getCompoundTagAt(i);
